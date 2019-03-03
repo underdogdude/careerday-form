@@ -31,7 +31,7 @@
     </section>
     <section class="container form pb-5 border__main">
         <div class="card">
-            <form action="">
+            <form id="attendee_form">
 
                 <div class="card-content">
                     <p class="title has-text-centered mt-1">
@@ -51,7 +51,7 @@
                                     <div class="field-body">
                                         <div class="field">
                                             <div class="control">
-                                                <input class="input" type="text" placeholder="" required>
+                                                <input class="input" type="text" placeholder="" name="name_en" required>
                                             </div>
                                         </div>
                                     </div>
@@ -63,7 +63,7 @@
                                     <div class="field-body">
                                         <div class="field">
                                             <div class="control">
-                                                <input class="input" type="text" placeholder="" required>
+                                                <input class="input" type="text" placeholder="" name="name_th" required>
                                             </div>
                                         </div>
                                     </div>
@@ -75,7 +75,7 @@
                                     <div class="field-body">
                                         <div class="field  is-narrow">
                                             <div class="control">
-                                                <input class="input" type="number" placeholder="" required>
+                                                <input class="input" type="number" name="age" placeholder="" required>
                                             </div>
                                         </div>
                                     </div>
@@ -88,11 +88,11 @@
                                         <div class="field  pt-375">
                                             <div class="control">
                                                 <label class="radio">
-                                                    <input type="radio" name="foobar">
+                                                    <input type="radio" value="MALE"  name="gender" checked>
                                                     ชาย
                                                 </label>
                                                 <label class="radio">
-                                                    <input type="radio" name="foobar" checked>
+                                                    <input type="radio" value="FEMALE" name="gender" >
                                                     หญิง
                                                 </label>
                                             </div>
@@ -106,7 +106,7 @@
                                     <div class="field-body">
                                         <div class="field">
                                             <div class="control">
-                                                <input class="input" type="email" placeholder="" required>
+                                                <input class="input" name="email" type="email" placeholder="" required>
                                             </div>
                                         </div>
                                     </div>
@@ -119,7 +119,7 @@
                                     <div class="field-body">
                                         <div class="field ">
                                             <div class="control">
-                                                <input class="input" type="text" placeholder="" required>
+                                                <input class="input" name="phone_number" type="text" placeholder="" required>
                                             </div>
                                         </div>
                                     </div>
@@ -130,7 +130,7 @@
                                     <div class="preview img-wrapper"></div>
                                     <div class="file-upload-wrapper">
                                         <input type="file" 
-                                            name="file" 
+                                            name="profilepic_filename" 
                                             class="file-upload-native" 
                                             id="profile" 
                                             accept="image/gif, image/jpeg"
@@ -178,7 +178,7 @@
                                     <div class="field-body">
                                         <div class="field  is-narrow">
                                             <div class="control is-flex flex__center">
-                                                <input class="input" type="text" placeholder="">
+                                                <input class="input" name="career_experience" type="text" placeholder="">
                                                 <p class="prl-375">ปี</p>
                                             </div>
                                         </div>
@@ -192,7 +192,7 @@
                                     <div class="field-body">
                                         <div class="field">
                                             <div class="control">
-                                                <input class="input" type="text" placeholder="">
+                                                <input class="input" name="career_term" type="text" placeholder="">
                                             </div>
                                         </div>
                                     </div>
@@ -206,7 +206,7 @@
                                         <div class="field">
                                             <div class="control">
                                                 <label class="checkbox">
-                                                    <input type="checkbox" id="is_new_graduated">
+                                                    <input type="checkbox" name="is_new_graduated" id="is_new_graduated" value=1 >
                                                     ใช่
                                                 </label>
                                             </div>
@@ -221,13 +221,13 @@
                                     <div class="field-body">
                                         <div class="field  is-narrow">
                                             <div class="select">
-                                                <select name="" id="interest_job">
+                                                <select name="university_level" id="interest_job">
                                                     <option value="" selected disabled>เลือกชั้นปี</option>
-                                                    <option value="">1</option>
-                                                    <option value="">2</option>
-                                                    <option value="">3</option>
-                                                    <option value="">4</option>
-                                                    <option value="">อื่นๆ</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="อื่นๆ">อื่นๆ</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -240,7 +240,7 @@
                                     <div class="field-body">
                                         <div class="field">
                                             <div class="control">
-                                                <input class="input" type="text" placeholder="">
+                                                <input class="input" name="university_name" type="text" placeholder="">
                                             </div>
                                         </div>
                                     </div>
@@ -252,7 +252,7 @@
                                     <div class="field-body">
                                         <div class="field">
                                             <div class="control">
-                                                <input class="input" type="text" placeholder="">
+                                                <input class="input" name="university_subject" type="text" placeholder="">
                                             </div>
                                         </div>
                                     </div>
@@ -264,14 +264,14 @@
                                     <div class="field-body">
                                         <div class="field">
                                             <div class="select">
-                                                <select name="">
+                                                <select name="occupation">
                                                     <option value="" selected disabled>เลือกแนวทางที่สนใจ</option>
-                                                    <option value="">Sale</option>
-                                                    <option value="">Software Development</option>
-                                                    <option value="">Infrastructure & System Admin</option>
-                                                    <option value="">Data Scientist</option>
-                                                    <option value="">DevOps Engineer</option>
-                                                    <option value="">Solution Architech</option>
+                                                    <option value="Sale">Sale</option>
+                                                    <option value="Software Development">Software Development</option>
+                                                    <option value="Infrastructure & System Admin">Infrastructure & System Admin</option>
+                                                    <option value="Data Scientist">Data Scientist</option>
+                                                    <option value="DevOps Engineer">DevOps Engineer</option>
+                                                    <option value="Solution Architech">Solution Architech</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -299,7 +299,7 @@
                                                     <input class="file-input" 
                                                         type="file" 
                                                         id="resume"
-                                                        name="resume"
+                                                        name="resume_filename"
                                                         accept="image/gif, image/jpeg, .doc, .docx, .pdf" />
 
                                                     <span class="file-cta">
@@ -337,6 +337,7 @@
 </body>
 <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script src="./js/main.js"></script>
 
 </html>

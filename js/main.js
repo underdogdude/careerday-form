@@ -1,3 +1,6 @@
+var BASE_URL_API = "https://sk5xigrxfc.execute-api.ap-southeast-1.amazonaws.com/prod";
+
+
 $("#is_new_graduated").change(function () {
     if (this.checked) {
         //Do stuff
@@ -6,26 +9,6 @@ $("#is_new_graduated").change(function () {
         $("#interest_job").attr("disabled", false);
     }
 });
-
-
-// sample of usage api for upload
-
-// var file = document.querySelector('input[type=file]').files[0];
-// if (file) {
-//     const base_url_api = '';
-//     const filename = '';
-//     const url = `${base_url_api}/${filename}`
-//     axios.put(url, file, {
-//         headers: {
-//             'Content-Type': file.type // MIME Type
-//         }
-//     }).then(function (response) {
-//         console.log('Upload completed : ' + filename);
-//     }).catch(function (error) {
-//         console.log(error);
-//     })
-// }
-
 
 // Show File name
 var file = document.getElementById("resume");
@@ -37,7 +20,7 @@ file.onchange = function () {
     }
 };
 
-function checkMaxUploadSize (id) {
+function checkMaxUploadSize(id) {
     var uploadField = document.getElementById(id);
     if (uploadField.files[0].size > 10000000) {
         alert("File is too big!");
@@ -111,3 +94,92 @@ var preview = {
     }
 };
 preview.init();
+
+
+$("#attendee_form").submit(function (e) {
+
+    e.preventDefault();
+    // Loading
+    var btn__submit = $('button[type=submit]');
+    btn__submit.addClass("is-loading");
+
+    var data = {};
+    var SEC_TIMESTAMP = Math.floor(Date.now() / 1000);
+    var profileImg = document.querySelector('#profile').files[0];
+    var resume = document.querySelector('#resume').files[0];
+
+    $(this).serializeArray().map(function (x) {
+        data[x.name] = x.value;
+    });
+    
+    //4 is length of ID
+    data.id = generateID(4) + SEC_TIMESTAMP;
+
+    if (profileImg !== undefined) {
+        data.profilepic_filename = 'profilepic_' + SEC_TIMESTAMP + '.' + profileImg.name.split('.').pop();
+
+        var url = `${BASE_URL_API}/attendee-file/${data.id}/${data.profilepic_filename}`
+        axios.put(url, profileImg, {
+            headers: {
+                'Content-Type': profileImg.type // MIME Type
+            }
+        }).then(function (response) {
+            console.log('Upload completed : ' + data.profilepic_filename);
+        }).catch(function (error) {
+            console.log(error);
+        })
+    }
+
+    if (resume !== undefined) {
+        data.resume_filename = 'resume_' + SEC_TIMESTAMP + '.' + resume.name.split('.').pop();
+
+        var url = `${BASE_URL_API}/attendee-file/${data.id}/${data.resume_filename}`
+        axios.put(url, resume, {
+            headers: {
+                'Content-Type': resume.type // MIME Type
+            }
+        }).then(function (response) {
+            console.log('Upload completed : ' + data.resume_filename);
+        }).catch(function (error) {
+            console.log(error);
+        })
+    }
+
+
+    axios.post(BASE_URL_API + '/attendee/', data)
+        .then(function (response) {
+            console.log(response);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+});
+
+
+
+function generateID(plength) {
+
+    var keylistalpha = "abcdefghijklmnopqrstuvwxyz";
+    var keylistint = "123456789";
+    var keylistspec = "abcdefghijklmnopqrstuvwxyz".toUpperCase();
+    var temp = '';
+    var len = plength / 2;
+    var len = len - 1;
+    var lenspec = plength - len - len;
+
+    for (i = 0; i < len; i++)
+        temp += keylistalpha.charAt(Math.floor(Math.random() * keylistalpha.length));
+
+    for (i = 0; i < lenspec; i++)
+        temp += keylistspec.charAt(Math.floor(Math.random() * keylistspec.length));
+
+    for (i = 0; i < len; i++)
+        temp += keylistint.charAt(Math.floor(Math.random() * keylistint.length));
+
+    temp = temp.split('').sort(function () {
+        return 0.5 - Math.random()
+    }).join('');
+
+    return temp;
+}
