@@ -101,7 +101,7 @@ $("#attendee_form").submit(function (e) {
     e.preventDefault();
     // Loading
     var btn__submit = $('button[type=submit]');
-    btn__submit.addClass("is-loading");
+        btn__submit.addClass("is-loading");
 
     var data = {};
     var SEC_TIMESTAMP = Math.floor(Date.now() / 1000);
@@ -114,6 +114,7 @@ $("#attendee_form").submit(function (e) {
     
     //4 is length of ID
     data.id = generateID(4) + SEC_TIMESTAMP;
+    data.age = parseInt( data.age );
 
     if (profileImg !== undefined) {
         data.profilepic_filename = 'profilepic_' + SEC_TIMESTAMP + '.' + profileImg.name.split('.').pop();
@@ -145,10 +146,23 @@ $("#attendee_form").submit(function (e) {
         })
     }
 
+    var isCheck = $('#is_new_graduated').is(':checked');
+    if(!isCheck) {
+        data.is_new_graduated = 0;
+    }else {
+        data.is_new_graduated = parseInt( data.is_new_graduated );
+    }
+    
+    console.log(data);
+
+
+    // Remove "" value 
+    Object.keys(data).forEach((key) => (data[key].length == 0) && delete data[key]);
 
     axios.post(BASE_URL_API + '/attendee/', data)
         .then(function (response) {
             console.log(response);
+            btn__submit.removeClass("is-loading");
         })
         .catch(function (error) {
             console.log(error);
@@ -183,3 +197,7 @@ function generateID(plength) {
 
     return temp;
 }
+
+
+
+
