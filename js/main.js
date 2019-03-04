@@ -1,5 +1,24 @@
 var BASE_URL_API = "https://sk5xigrxfc.execute-api.ap-southeast-1.amazonaws.com/prod";
 
+var url_string = window.location.href;
+var url = new URL(url_string);
+var DOC_ID = url.searchParams.get("id");
+
+// Retrive Data
+if (DOC_ID !== null) {
+
+    var url = `${BASE_URL_API}/attendee?id=${ DOC_ID }`
+    axios.get(url)
+        .then(function (response) {
+            // handle success
+            editData(response.data.result);
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        });
+}
+
 
 $("#is_new_graduated").change(function () {
     if (this.checked) {
@@ -101,7 +120,7 @@ $("#attendee_form").submit(function (e) {
     e.preventDefault();
     // Loading
     var btn__submit = $('button[type=submit]');
-        btn__submit.addClass("is-loading");
+    btn__submit.addClass("is-loading");
 
     var data = {};
     var SEC_TIMESTAMP = Math.floor(Date.now() / 1000);
@@ -111,15 +130,14 @@ $("#attendee_form").submit(function (e) {
     $(this).serializeArray().map(function (x) {
         data[x.name] = x.value;
     });
-    
+
     //4 is length of ID
     data.id = generateID(4) + SEC_TIMESTAMP;
-    data.age = parseInt( data.age );
+    data.age = parseInt(data.age);
 
     if (profileImg !== undefined) {
-        data.profilepic_filename = 'profilepic_' + SEC_TIMESTAMP + '.' + profileImg.name.split('.').pop();
-
-        var url = `${BASE_URL_API}/attendee-file/${data.id}/${data.profilepic_filename}`
+        data.profilepic_filename = data.id + '/profilepic_' + SEC_TIMESTAMP + '.' + profileImg.name.split('.').pop();
+        var url = `${BASE_URL_API}/attendee-file/${data.profilepic_filename}`
         axios.put(url, profileImg, {
             headers: {
                 'Content-Type': profileImg.type // MIME Type
@@ -129,12 +147,16 @@ $("#attendee_form").submit(function (e) {
         }).catch(function (error) {
             console.log(error);
         })
+    }else { 
+        var text = $("#profile_name").attr("placeholder");
+        if(text != "รูปโปรไฟล์") {
+            data.profilepic_filename = text;
+        }
     }
 
     if (resume !== undefined) {
-        data.resume_filename = 'resume_' + SEC_TIMESTAMP + '.' + resume.name.split('.').pop();
-
-        var url = `${BASE_URL_API}/attendee-file/${data.id}/${data.resume_filename}`
+        data.resume_filename = data.id + '/resume_' + SEC_TIMESTAMP + '.' + resume.name.split('.').pop();
+        var url = `${BASE_URL_API}/attendee-file/${data.resume_filename}`
         axios.put(url, resume, {
             headers: {
                 'Content-Type': resume.type // MIME Type
@@ -144,15 +166,20 @@ $("#attendee_form").submit(function (e) {
         }).catch(function (error) {
             console.log(error);
         })
+    }else { 
+        var text = $("#filename").html();
+        if(text != "") {
+            data.resume_filename = text;
+        }
     }
 
     var isCheck = $('#is_new_graduated').is(':checked');
-    if(!isCheck) {
+    if (!isCheck) {
         data.is_new_graduated = 0;
-    }else {
-        data.is_new_graduated = parseInt( data.is_new_graduated );
+    } else {
+        data.is_new_graduated = parseInt(data.is_new_graduated);
     }
-    
+
     console.log(data);
 
 
@@ -202,10 +229,44 @@ function generateID(plength) {
 
 
 
-function closeDialog() { 
+function closeDialog() {
     $("#dialog").removeClass("is-active");
 }
 
-function showDialog() { 
+function showDialog() {
     $("#dialog").addClass("is-active");
+}
+
+
+function editData(data) {
+
+    Object.keys(data).forEach(function (key) {
+
+        if(key == 'profilepic_filename') {
+
+            $("#profile_picture").css("background-image", "url(" + BASE_URL_API + "/attendee-file/" + data[key] + ")");
+            $("#profile_name").attr("placeholder", data[key]);
+
+        }else if (key == 'resume_filename') { 
+            
+            $("#filename").html(data[key]);
+
+        }else if(key == 'is_new_graduated'){
+            if(data[key] == 1) {
+
+                $('#is_new_graduated').attr('checked', true); // "checked"
+                $("#interest_job").attr("disabled", true);
+
+            }
+        }else if(key == 'gender') {
+
+            $('input[name="gender"][value='+ data[key] +']').attr('checked', 'checked');
+        }else {
+            var elem = $("[name=" + key + "]");
+            if (elem.length !== 0) {
+                elem.val(data[key]);
+            }
+        }
+    });
+
 }

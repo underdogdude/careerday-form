@@ -223,3 +223,9 @@ input[type="file"]::-webkit-file-upload-button {
 .modal-card-foot{
     justify-content: flex-end;
 }
+
+@media screen and (min-width: 769px), print {
+    .field-body {
+        flex-grow: 4;
+    }
+}
