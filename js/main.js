@@ -163,6 +163,7 @@ $("#attendee_form").submit(function (e) {
         .then(function (response) {
             console.log(response);
             btn__submit.removeClass("is-loading");
+            showDialog();
         })
         .catch(function (error) {
             console.log(error);
@@ -201,3 +202,10 @@ function generateID(plength) {
 
 
 
+function closeDialog() { 
+    $("#dialog").removeClass("is-active");
+}
+
+function showDialog() { 
+    $("#dialog").addClass("is-active");
+}
