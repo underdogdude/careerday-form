@@ -158,7 +158,7 @@ $("#attendee_form").submit(function (e) {
 
     //4 is length of ID
     data.id = generateID(4) + SEC_TIMESTAMP;
-    data.age = parseInt(data.age);
+    data.age = data.age ? parseInt(data.age) : "";
 
     if (profileImg !== undefined) {
         state_profile = 0;
